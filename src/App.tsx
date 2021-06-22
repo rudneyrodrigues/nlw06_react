@@ -1,7 +1,19 @@
-function App() {
+import { useState } from 'react';
+
+import { Button } from './components/Button';
+
+export function App() {
+  const [counter, setCounter] = useState(0);
+
+  function handleCount() {
+    setCounter(counter + 1);
+  };
+
   return (
-    <h1>Ola mundo</h1>
+    <>
+      <Button handleCount={handleCount}>
+        {counter}
+      </Button>
+    </>
   );
 }
-
-export default App;
