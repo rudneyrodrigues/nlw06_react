@@ -1,12 +1,12 @@
 type ButtonProps = {
   handleCount: () => void;
-  children: number;
+  children?: number;
 }
 
 export function Button({ handleCount, children }: ButtonProps) {
   return (
     <button onClick={handleCount}>
-      {children}
+      {children || 'Default'}
     </button>
   );
 }

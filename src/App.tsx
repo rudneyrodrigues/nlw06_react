@@ -11,9 +11,8 @@ export function App() {
 
   return (
     <>
-      <Button handleCount={handleCount}>
-        {counter}
-      </Button>
+      <h1>{counter}</h1>
+      <Button handleCount={handleCount} />
     </>
   );
 }
