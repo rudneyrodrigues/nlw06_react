@@ -1,0 +1,60 @@
+:root {
+  --black-500: #29292E;
+  --black-900: #050206;
+
+  --purple-100: #835AFD;
+  --purple-200: #6F4BD8;
+  --purple-gradient: linear-gradient(135deg, #485BFF 0%, #FF59F8 100%) no-repeat;
+
+  --red-100: #E73F5D;
+  --red-150: #D73754;
+
+  --gray-100: #DBDCDD;
+  --gray-200: #CECECE;
+  --gray-300: #A8A8B3;
+  --gray-450: #7E7E86;
+  --gray-500: #737380;
+
+  --white-100: #FEFEFE;
+  --white-150: #F8F8F8;
+
+  --pink-200: #D67EE2;
+  --pink-300: #E559F9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  @media (max-width: 1080px) {
+    font-size: 93.75%;
+  }
+  @media (max-width: 720px) {
+    font-size: 87.5%;
+  }
+}
+
+body {
+  background: var(--white-150);
+  color: var(--black-500);
+  -webkit-font-smoothing: antialiased;
+  //Hack para que os browsers que utilizam o chromium por baixo,
+  //utilizem as fontes detalhadas.
+}
+
+body, input, textarea, button {
+  font: 400 1rem 'Roboto', sans-serif;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+[disabled] {
+  opacity: .6;
+  cursor: not-allowed;
+}

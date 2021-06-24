@@ -1,12 +1,11 @@
-type ButtonProps = {
-  handleCount: () => void;
-  children?: number;
-}
+import { ButtonHTMLAttributes } from "react";
 
-export function Button({ handleCount, children }: ButtonProps) {
+import styles from './styles.module.scss';
+
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+
+export function Button(props: ButtonProps) {
   return (
-    <button onClick={handleCount}>
-      {children || 'Default'}
-    </button>
+    <button className={styles.buttonContainer} {...props} />
   );
 }

@@ -1,0 +1,77 @@
+#newRoom {
+  display: flex;
+  // Todos os elementos irão esticar para caber na largura total do bloco em que estão
+  align-items: stretch;
+  height: 100vh;
+
+  main {
+    flex: 8;
+
+    padding: 0 2rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mainContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 20rem;
+    align-items: stretch;
+    text-align: center;
+
+    // Ira pegar as imagens que estão no primeiro nivel do bloco
+    > img {
+      // Retira o "stretch" da logo, para que ela fique no tamanho normal
+      align-self: center;
+    }
+
+    h2 {
+      font: 700 1.5rem 'Poppins', sans-serif;
+      margin: 4rem 0 1.5rem;
+    }
+
+    form {
+      input {
+        height: 3.125rem;
+        border-radius: .5rem;
+        padding: 0 1rem;
+        background: #fff;
+        border: 1px solid var(--gray-300);
+      }
+
+      button {
+        margin-top: 1rem;
+      }
+
+      button, input {
+        width: 100%;
+      }
+    }
+
+    p {
+      margin-top: 1rem;
+      color: var(--gray-500);
+      font-size: .875rem;
+
+      a {
+        margin-left: .5rem;
+        text-decoration: none;
+        color: var(--pink-300);
+
+        transition: filter .2s;
+
+        &:hover {
+          filter: brightness(.8);
+        }
+      }
+    }
+  }
+
+  @media(max-width: 720px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
