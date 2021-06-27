@@ -74,6 +74,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function logoutWithGoogle() {
     await auth.signOut();
 
+    toast.success('Logout feito com sucesso');
+
     setUser(undefined);
   }
 

@@ -154,6 +154,10 @@ export function Room() {
             <Button type="submit" disabled={!user}>Enviar pergunta</Button>
           </div>
         </form>
+
+        <div>
+          { JSON.stringify(questions) }
+        </div>
       </main>
     </div>
   );
