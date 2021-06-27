@@ -1,21 +1,36 @@
-import { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { FormEvent, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FiLogIn } from 'react-icons/fi';
-// import { useContext } from 'react';
 
 import { Aside } from '../../components/Aside';
 import { Button } from '../../components/Button';
-// import { useAuth } from '../../hooks/useAuth';
+import { database } from '../../services/firebase';
+import { useAuth } from '../../hooks/useAuth';
 
 import logoImg from '../../assets/images/logo.svg';
 
 import styles from './styles.module.scss';
 
 export function NewRoom() {
-  // const { user } = useAuth();
+  const { user } = useAuth();
+  const history = useHistory();
+  const [room, setRoom] = useState('');
 
-  function handleSubmit(e: FormEvent) {
+  function handleCreateNewRoom(e: FormEvent) {
     e.preventDefault();
+
+    if (room.trim() === '') {
+      return;
+    }
+
+    const roomRef = database.ref('rooms');
+
+    const firebaseRoom = roomRef.push({
+      title: room,
+      authorId: user?.id
+    });
+
+    history.push(`/rooms/${firebaseRoom.key}`);
   }
 
   return (
@@ -28,10 +43,13 @@ export function NewRoom() {
 
           <h2>Criar uma nova sala</h2>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleCreateNewRoom}>
             <input
               type="text"
               placeholder="Nome da sala"
+              onChange={(e) => {setRoom(e.target.value)}}
+              value={room}
+              required
             />
             <Button type="submit">
               <FiLogIn />

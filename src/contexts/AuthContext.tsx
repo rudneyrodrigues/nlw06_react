@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createContext, ReactNode } from "react";
+import toast from "react-hot-toast";
 
 import { auth, firebase } from '../services/firebase';
 
@@ -16,6 +17,7 @@ type AuthProviderProps = {
 type AuthContextData = {
   user: User | undefined;
   signInWithGoogle: () => Promise<void>;
+  logoutWithGoogle: () => Promise<void>;
   // Utiliza o Promise quando uma função possui async await
 }
 
@@ -57,7 +59,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const { displayName, photoURL, uid } = result.user;
 
       if (!displayName || !photoURL) {
-        throw new Error('Missing information from Google Account.');
+        toast.error('Missing information from Google Account.');
+        return;
       }
 
       setUser({
@@ -68,10 +71,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function logoutWithGoogle() {
+    await auth.signOut();
+
+    setUser(undefined);
+  }
+
   return (
     <AuthContext.Provider value={{
       user,
-      signInWithGoogle
+      signInWithGoogle,
+      logoutWithGoogle
     }}>
       {children}
     </AuthContext.Provider>
