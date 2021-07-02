@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FiLogIn } from 'react-icons/fi';
+import toast from 'react-hot-toast';
 
 import { Aside } from '../../components/Aside';
 import { Button } from '../../components/Button';
@@ -35,7 +36,12 @@ export function Home() {
     const roomRef = await database.ref(`rooms/${roomCode}`).get();
 
     if (!roomRef.exists()) {
-      alert('Room does not exist.');
+      toast.error('A sala não existe.');
+      return;
+    }
+
+    if (roomRef.val().endedAt) {
+      toast.error('Esta sala já foi encerada.');
       return;
     }
 

@@ -17,22 +17,11 @@
 
       > div {
         display: flex;
-        align-items: center;
-        justify-content: center;
 
-        .logout {
+        gap: 1rem;
+
+        button {
           height: 2.5rem;
-          padding: .5rem 1rem;
-          margin-left: 1rem;
-          border-radius: .5rem;
-          background: var(--purple-100);
-          color: #fff;
-
-          transition: filter .2s;
-
-          &:hover {
-            filter: brightness(.8);
-          }
         }
       }
     }
@@ -116,21 +105,5 @@
   .questionsContainer {
     margin-top: 2rem;
     width: 100%;
-  }
-
-  .likeButton {
-    display: flex;
-    align-items: flex-end;
-    color: var(--gray-500);
-
-    gap: .5rem;
-
-    &.liked {
-      color: var(--purple-100);
-
-      svg path {
-          stroke: var(--purple-100)
-      }
-    }
   }
 }

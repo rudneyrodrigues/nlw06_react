@@ -16,6 +16,20 @@
     margin-right: .5rem;
   }
 
+  &.outlined {
+    background: #fff;
+    border: 1px solid var(--purple-100);
+    color: var(--purple-100);
+
+    transition: .2s;
+
+    &:hover {
+      background: var(--red-100);
+      border-color: var(--red-100);
+      color: #fff;
+    }
+  }
+
   svg {
     margin-right: .5rem;
   }
