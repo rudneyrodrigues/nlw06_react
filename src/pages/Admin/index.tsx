@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -7,7 +6,6 @@ import { database } from '../../services/firebase';
 import { Button } from '../../components/Button';
 import { RoomCode } from '../../components/RoomCode';
 import { Question } from '../../components/Question/index';
-// import { ModalConfirm } from '../../components/ModalConfirm';
 
 import logoImg from '../../assets/images/logo.svg';
 import deleteImg from '../../assets/images/delete.svg';
@@ -23,8 +21,6 @@ export function AdminRoom() {
   const params = useParams<RoomParams>();
   const history = useHistory();
   const roomId = params.id;
-
-  // const [modalIsOpen, setModalIsOpen] = useState(true);
 
   const { questions, title } = useRoom(roomId);
 
@@ -100,8 +96,6 @@ export function AdminRoom() {
           })}
         </div>
       </main>
-
-      {/* <ModalConfirm isOpen={modalIsOpen}/> */}
     </div>
   );
 };
