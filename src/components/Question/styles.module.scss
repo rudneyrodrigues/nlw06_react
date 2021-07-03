@@ -50,9 +50,14 @@
       }
     }
   }
-}
 
-.highlighted {
-  border: 1px solid var(--purple-100);
-  filter: brightness(.9);
+  &.highlighted {
+    border: 1px solid var(--purple-100);
+    filter: brightness(.9);
+  }
+
+  &.answered {
+    filter: brightness(.9);
+    border: none;
+  }
 }

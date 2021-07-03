@@ -40,25 +40,39 @@ export function AdminRoom() {
     }
   }
 
+  async function removeQuestionInDatabase(questionId: string) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).remove()
+  }
+
   async function handleDeleteQuestion(questionId: string) {
     if (window.confirm('Tem certeza que deseja excluir esta pergunta?')) {
       await database.ref(`rooms/${roomId}/questions/${questionId}`).remove()
 
-      toast.success('Pergunta excluída com sucesso')
+      toast.promise(
+        removeQuestionInDatabase(questionId),
+        {
+          loading: 'Excluíndo',
+          success: 'Pergunta excluída',
+          error: 'Erro ao excluír pergunta'
+        }
+      )
+      // toast.success('Pergunta excluída com sucesso')
     }
   }
 
   async function handleCheckQuestionAsAnswered(questionId: string) {
     const questionIsAnswered = await (await database.ref(`rooms/${roomId}/questions/${questionId}/isAnswered`).get());
+    
 
     await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
       isAnswered: !questionIsAnswered.val()
     })
 
+
     if (questionIsAnswered.val()) {
-      toast.success('Pergunta em aberto novamente')
+      toast.success('Pergunta marcada como não respondida')
     } else {
-      toast.success('Pergunta respondida')
+      toast.success('Pergunta marcada como respondida')
     }
   }
 
@@ -82,7 +96,6 @@ export function AdminRoom() {
 
         if (roomAuthor.val() !== user?.id) {
           history.push(`/rooms/${roomId}`);
-          toast.error('Você não é o Admin desta sala');
         }
       } catch (error) {
         console.error(error);
@@ -137,12 +150,14 @@ export function AdminRoom() {
                 <button
                   type="button"
                   onClick={() => handleCheckQuestionAsAnswered(question.id)}
+                  hidden={question.isAnswered}
                 >
                   <img src={checkImg} alt="Marcar pergunta como respondida" />
                 </button>
                 <button
                   type="button"
                   onClick={() => handleHighlightQuestion(question.id)}
+                  hidden={question.isAnswered}
                 >
                   <img src={answerImg} alt="Dar destaque a pergunta" />
                 </button>
