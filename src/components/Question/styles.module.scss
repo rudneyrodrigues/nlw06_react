@@ -52,12 +52,19 @@
   }
 
   &.highlighted {
+    background: #f4f0ff;
     border: 1px solid var(--purple-100);
-    filter: brightness(.9);
+
+    footer {
+      .userInfo {
+        span {
+          color: var(--black-500);
+        }
+      }
+    }
   }
 
   &.answered {
-    filter: brightness(.9);
-    border: none;
+    background: var(--gray-100);
   }
 }
