@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useAuth } from '../../hooks/useAuth';
 import { useParams, useHistory } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -9,6 +11,8 @@ import { Question } from '../../components/Question/index';
 
 import logoImg from '../../assets/images/logo.svg';
 import deleteImg from '../../assets/images/delete.svg';
+import checkImg from '../../assets/images/check.svg';
+import answerImg from '../../assets/images/answer.svg';
 
 
 import styles from './styles.module.scss';
@@ -19,6 +23,7 @@ type RoomParams = {
 
 export function AdminRoom() {
   const params = useParams<RoomParams>();
+  const { user, logoutWithGoogle } = useAuth();
   const history = useHistory();
   const roomId = params.id;
 
@@ -29,10 +34,10 @@ export function AdminRoom() {
       await database.ref(`rooms/${roomId}`).update({
         endedAt: new Date()
       })
-    }
 
-    toast.success('Sala encerrada')
-    history.push('/')
+      toast.success('Sala encerrada')
+      history.push('/')
+    }
   }
 
   async function handleDeleteQuestion(questionId: string) {
@@ -42,6 +47,48 @@ export function AdminRoom() {
       toast.success('Pergunta excluída com sucesso')
     }
   }
+
+  async function handleCheckQuestionAsAnswered(questionId: string) {
+    const questionIsAnswered = await (await database.ref(`rooms/${roomId}/questions/${questionId}/isAnswered`).get());
+
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isAnswered: !questionIsAnswered.val()
+    })
+
+    if (questionIsAnswered.val()) {
+      toast.success('Pergunta em aberto novamente')
+    } else {
+      toast.success('Pergunta respondida')
+    }
+  }
+
+  async function handleHighlightQuestion(questionId: string) {
+    const questionIsHighlighted = await (await database.ref(`rooms/${roomId}/questions/${questionId}/isHighlighted`).get());
+
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isHighlighted: !questionIsHighlighted.val()
+    })
+  }
+
+  async function signOutGoogleAccount() {
+    logoutWithGoogle();
+    history.push(`/rooms/${roomId}`)
+  }
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const roomAuthor = await database.ref(`rooms/${roomId}/authorId`).get();
+
+        if (roomAuthor.val() !== user?.id) {
+          history.push(`/rooms/${roomId}`);
+          toast.error('Você não é o Admin desta sala');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [history, user?.id, roomId])
 
   return (
     <div id={styles.pageRoom}>
@@ -56,6 +103,8 @@ export function AdminRoom() {
             <RoomCode code={roomId} />
             
             <Button isOutlined onClick={handleEndRoom}>Encerrar sala</Button>
+
+            <Button onClick={signOutGoogleAccount}>Sair</Button>
           </div>
         </div>
       </header>
@@ -85,6 +134,18 @@ export function AdminRoom() {
                 isHighlighted={question.isHighlighted}
                 key={question.id}
               >
+                <button
+                  type="button"
+                  onClick={() => handleCheckQuestionAsAnswered(question.id)}
+                >
+                  <img src={checkImg} alt="Marcar pergunta como respondida" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleHighlightQuestion(question.id)}
+                >
+                  <img src={answerImg} alt="Dar destaque a pergunta" />
+                </button>
                 <button
                   type="button"
                   onClick={() => handleDeleteQuestion(question.id)}

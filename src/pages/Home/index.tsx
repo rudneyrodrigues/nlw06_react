@@ -34,6 +34,7 @@ export function Home() {
     }
 
     const roomRef = await database.ref(`rooms/${roomCode}`).get();
+    const roomAuthor = await database.ref(`rooms/${roomCode}/authorId`).get()
 
     if (!roomRef.exists()) {
       toast.error('A sala não existe.');
@@ -45,7 +46,11 @@ export function Home() {
       return;
     }
 
-    history.push(`/rooms/${roomCode}`)
+    if (roomAuthor.val() === user?.id) {
+      history.push(`/admin/rooms/${roomCode}`)
+    } else {
+      history.push(`/rooms/${roomCode}`)
+    }
   }
   
   return (

@@ -1,17 +1,17 @@
 import { useParams, useHistory } from 'react-router-dom';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { Button } from '../../components/Button';
 import { RoomCode } from '../../components/RoomCode';
 import { Question } from '../../components/Question/index';
 import { useAuth } from '../../hooks/useAuth';
+import { useRoom } from '../../hooks/useRoom';
 import { database } from '../../services/firebase';
 
 import logoImg from '../../assets/images/logo.svg';
 
 import styles from './styles.module.scss';
-import { useRoom } from '../../hooks/useRoom';
 
 type RoomParams = {
   id: string;
@@ -72,6 +72,20 @@ export function Room() {
     }
   }
 
+  useEffect(() => {
+    (async function () {
+      try {
+        const roomAuthor = await database.ref(`rooms/${roomId}/authorId`).get();
+
+        if (roomAuthor.val() === user?.id) {
+          history.push(`/admin/rooms/${roomId}`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [history, user?.id, roomId])
+
   return (
     <div id={styles.pageRoom}>
       <header>
@@ -84,7 +98,7 @@ export function Room() {
           <div>
             <RoomCode code={roomId} />
             {user ? (
-              <button className={styles.logout} onClick={logoutWithGoogle}>Sair</button>
+              <Button onClick={logoutWithGoogle}>Sair</Button>
             ) : (
               ''
             )}
